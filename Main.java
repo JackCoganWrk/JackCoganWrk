@@ -1,7 +1,7 @@
 
 public class Main {
     public static void main(String[] args) {
-        Griddy lib = new Griddy();
-        lib.Griddy();
+        Ciphers lib = new Ciphers();
+        lib.Caesar();
     }
 }

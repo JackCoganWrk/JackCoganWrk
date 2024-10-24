@@ -1,7 +1,8 @@
 import java.util.Scanner;
+
+import static java.util.Arrays.deepToString;
+
 public class Griddy {
-
-
     public void Griddy() {
 
         int r = 0;
@@ -22,9 +23,10 @@ public class Griddy {
             }
 
             // User selects their first position
-            int yaxis = 0;
-            int xaxis = 0;
+
             if (team == 1) {
+                int xaxis;
+                int yaxis;
                 System.out.print("Enter an X-Coordinate from 1 to 3");
                 xaxis = s.nextInt();
                 if (xaxis > 3) {
@@ -34,17 +36,17 @@ public class Griddy {
                 }
                 System.out.print("Enter an Y-Coordinate from 1 to 3");
                 yaxis = s.nextInt();
-                yaxis = s.nextInt();
                 if (yaxis > 3) {
                     System.out.print("Invalid input");
                 } else if (yaxis < 1) {
                     System.out.print("Invalid input");
                 }
+                int xaxis1 = xaxis;
+                int yaxis1 = yaxis;
+                NCBoard[xaxis1][yaxis1] = team;
+                deepToString(NCBoard);
+                System.out.println(NCBoard[xaxis1][yaxis1]);
             }
-
-            // Program processes the move
-            Object xaxis1 = xaxis;
-            Object yaxis1 = yaxis;
         }
     }
 }
