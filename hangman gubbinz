@@ -1,0 +1,30 @@
+import java.util.Scanner;
+
+public class HangmanGame {
+    public void GameofHangman;
+
+    {
+        String[] wordList = {"apple", "table", "ocean", "computer", "banana",
+                "sunshine", "mountain", "river", "forest", "cloud",
+                "guitar", "piano", "elephant", "unicorn", "coffee",
+                "chocolate", "book", "candle", "lamp", "dream",
+                "whistle", "star", "moon", "glass", "music",
+                "planet", "robot", "kite", "flower", "paint",
+                "mirror", "dream", "puzzle", "cake", "bicycle",
+                "sunset", "rainbow", "happiness", "journey", "adventure",
+                "freedom", "friendship", "magic", "wisdom", "love",
+                "sapphire", "ruby", "emerald", "topaz", "diamond",
+                "apple", "banana", "grape", "orange", "kiwi",
+                "mango", "peach", "pear", "plum", "cherry",
+                "watermelon", "pineapple", "apricot", "coconut", "fig",
+                "date", "lemon", "lime", "berry", "pomegranate",
+                "melon", "papaya", "tangerine", "nectarine", "blueberry",
+                "blackberry", "strawberry", "cantaloupe", "raspberry", "avocado",
+                "zucchini", "carrot", "potato", "onion", "garlic",
+                "pepper", "tomato", "spinach", "lettuce", "broccoli",
+                "cauliflower", "cabbage", "asparagus", "mushroom", "beet",
+                "turnip", "radish", "squash", "eggplant", "artichoke"};
+
+
+    }
+}
