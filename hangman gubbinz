@@ -1,9 +1,7 @@
 import java.util.Scanner;
 
 public class HangmanGame {
-    public void GameofHangman;
-
-    {
+    public void GameOfHangman() {
         String[] wordList = {"apple", "table", "ocean", "computer", "banana",
                 "sunshine", "mountain", "river", "forest", "cloud",
                 "guitar", "piano", "elephant", "unicorn", "coffee",
@@ -25,6 +23,34 @@ public class HangmanGame {
                 "cauliflower", "cabbage", "asparagus", "mushroom", "beet",
                 "turnip", "radish", "squash", "eggplant", "artichoke"};
 
+        //Chooses a random word from the list
+        int arrayLength = (wordList.length);
+        int chosenWordLocation = (int) (Math.random() * arrayLength);
 
+        //Casts word to a character array for use later
+        String gameWord = wordList[chosenWordLocation];
+        char[] gameWordLetters = gameWord.toCharArray();
+
+        // Prints the length of the word the user will be guessing
+        int wordLength = gameWord.length();
+        char[] wordLengthPrint = new char[wordLength];
+        System.out.println(wordLengthPrint);
+
+        Scanner s = new Scanner(System.in);
+        int rightGuesses = 0;
+        int wrongGuesses = 0;
+            while (wrongGuesses < 9) {
+                while (rightGuesses < wordLength)
+                    System.out.print("Which character position would you like to guess?");
+                    int userIndex = s.nextInt();
+                    System.out.print("Enter one character");
+                    String userInput = s.nextLine();
+                    char userInputPrint = userInput.charAt(0);
+                    if (userInput = userInputPrint)
+
+            }
+        }
     }
-}
+
+
+
