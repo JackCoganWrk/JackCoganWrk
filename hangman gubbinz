@@ -1,61 +1,65 @@
  import java.util.Scanner;
 
-public class HangmanGame {
-    public void HangmanGame() {
-        String[] wordList = {"apple", "table", "ocean", "computer", "banana",
-                "sunshine", "mountain", "river", "forest", "cloud",
-                "guitar", "piano", "elephant", "unicorn", "coffee",
-                "chocolate", "book", "candle", "lamp", "dream",
-                "whistle", "star", "moon", "glass", "music",
-                "planet", "robot", "kite", "flower", "paint",
-                "mirror", "dream", "puzzle", "cake", "bicycle",
-                "sunset", "rainbow", "happiness", "journey", "adventure",
-                "freedom", "friendship", "magic", "wisdom", "love",
-                "sapphire", "ruby", "emerald", "topaz", "diamond",
-                "apple", "banana", "grape", "orange", "kiwi",
-                "mango", "peach", "pear", "plum", "cherry",
-                "watermelon", "pineapple", "apricot", "coconut", "fig",
-                "date", "lemon", "lime", "berry", "pomegranate",
-                "melon", "papaya", "tangerine", "nectarine", "blueberry",
-                "blackberry", "strawberry", "cantaloupe", "raspberry", "avocado",
-                "zucchini", "carrot", "potato", "onion", "garlic",
-                "pepper", "tomato", "spinach", "lettuce", "broccoli",
-                "cauliflower", "cabbage", "asparagus", "mushroom", "beet",
-                "turnip", "radish", "squash", "eggplant", "artichoke"};
+    public class HangmanGame {
 
-        //Chooses a random word from the list
-        int arrayLength = (wordList.length);
-        int chosenWordLocation = (int) (Math.random() * arrayLength);
+        public void GameOfHangman() {
+            String[] wordList = {"apple", "table", "ocean", "computer", "banana",
+                    "sunshine", "mountain", "river", "forest", "cloud",
+                    "guitar", "piano", "elephant", "unicorn", "coffee",
+                    "chocolate", "book", "candle", "lamp", "dream",
+                    "whistle", "star", "moon", "glass", "music",
+                    "planet", "robot", "kite", "flower", "paint",
+                    "mirror", "dream", "puzzle", "cake", "bicycle",
+                    "sunset", "rainbow", "happiness", "journey", "adventure",
+                    "freedom", "friendship", "magic", "wisdom", "love",
+                    "sapphire", "ruby", "emerald", "topaz", "diamond",
+                    "apple", "banana", "grape", "orange", "kiwi",
+                    "mango", "peach", "pear", "plum", "cherry",
+                    "watermelon", "pineapple", "apricot", "coconut", "fig",
+                    "date", "lemon", "lime", "berry", "pomegranate",
+                    "melon", "papaya", "tangerine", "nectarine", "blueberry",
+                    "blackberry", "strawberry", "cantaloupe", "raspberry", "avocado",
+                    "zucchini", "carrot", "potato", "onion", "garlic",
+                    "pepper", "tomato", "spinach", "lettuce", "broccoli",
+                    "cauliflower", "cabbage", "asparagus", "mushroom", "beet",
+                    "turnip", "radish", "squash", "eggplant", "artichoke"};
 
-        //Casts word to a character array for use later
-        String gameWord = wordList[chosenWordLocation];
-        char[] gameWordLetters = gameWord.toCharArray();
 
-        // Prints the length of the word the user will be guessing
-        int wordLength = gameWord.length();
-        char[] wordLengthPrint = new char[wordLength];
-        System.out.println(wordLengthPrint);
+            //Chooses a random word from the list
+            int arrayLength = (wordList.length);
+            int chosenWordLocation = (int) (Math.random() * arrayLength);
 
-        Scanner s = new Scanner(System.in);
+            //Casts word to a character array for use later
+            String gameWord = wordList[chosenWordLocation];
+            char[] gameWordLetters = gameWord.toCharArray();
 
-        int i = 0;
-        int r = 0;
-        int rightGuesses = 0;
-        int wrongGuesses = 0;
-        while (wrongGuesses < 9) {
-            while (rightGuesses < wordLength) {
-                System.out.print("Which character position would you like to guess?");
-                int userIndex = s.nextInt();
-                System.out.print("Enter one character");
-                String userInput1 = s.nextLine();
-                char userInput = userInput1.charAt(0);
-                if (userInput == gameWordLetters[userIndex]) {
+            // Prints the length of the word the user will be guessing
+            int wordLength = gameWord.length();
+            char[] wordLengthPrint = new char[wordLength];
+            System.out.println(wordLengthPrint);
+
+            //Keeps track of right guesses and wrong guesses
+            Scanner s = new Scanner(System.in);
+            int i = 0;
+            int r = 0;
+            int rightGuesses = 0;
+            int wrongGuesses = 0;
+            while (wrongGuesses < 9) {
+                while (rightGuesses < wordLength) {
+                        // Asks user which position they would like to guess
+                        System.out.print("Which character position would you like to guess?");
+                        int userIndex = s.nextInt();
+                        System.out.print("Enter one character");
+                        String userInput1 = s.nextLine();
+                        char userInput = userInput1.charAt(0);
+                        if (userInput == gameWordLetters[userIndex]) {
+
+                            rightGuesses = rightGuesses(i)++;
+                            i++;
+
+                        }
+                    }
                 }
-                rightGuesses(i) == rightGuesses + 1
-
             }
         }
-    }
-}
-
 
