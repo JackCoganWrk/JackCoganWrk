@@ -1,0 +1,32 @@
+package io.github.some_example_name;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import org.w3c.dom.Text;
+
+import java.awt.*;
+
+public class Brick {
+
+    Rectangle bounds;
+    boolean destroyed;
+    Texture texture;
+
+
+    public Brick(float brickx, float bricky, float brickwidth, float brickheight){
+        this.bounds = new Rectangle(brickx,bricky,brickwidth,brickheight);
+        this.destroyed = false;
+        this.texture = texture;
+    }
+
+    public void draw(SpriteBatch batch) {
+        if (!destroyed){
+            batch.draw(texture,bounds.x, bounds.y, bounds.width,bounds.height);
+        }
+    }
+}
+
