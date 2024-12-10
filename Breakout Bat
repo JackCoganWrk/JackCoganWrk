@@ -1,0 +1,34 @@
+package io.github.some_example_name;
+import com.badlogic.gdx.math.Rectangle;
+
+public class Bat {
+
+    private float rx = 50;
+    private float ry = 50;
+    private float rh = 10;
+    private float rw = 40;
+
+    public float getRx() {
+        return rx;
+    }
+    public float getRy(){
+        return ry;
+    }
+    public float getRh(){
+        return rh;
+    }
+    public float getRw(){
+        return rw;
+    }
+
+    public void setPositionBat(float rx, float ry) {
+        this.rx = rx;
+        this.ry = ry;
+        this.rh = rh;
+        this.rw = rw;
+    }
+
+    public Rectangle toRectangle(){
+        return  new Rectangle(rx,ry,rh,rw);
+    }
+}
