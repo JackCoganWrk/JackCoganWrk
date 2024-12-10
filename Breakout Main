@@ -1,0 +1,118 @@
+package io.github.some_example_name;
+
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.utils.ScreenUtils;
+/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+
+public class Main extends ApplicationAdapter {
+
+    private SpriteBatch batch;
+    private Texture image;
+    ShapeRenderer sr;
+    private Circles c1;
+    private Bat bat;
+    private Vector2 velocity;
+    private Vector2 circle;
+    private Vector2 rectangle;
+    private int screenHeight;
+    private int screenWidth;
+
+    @Override
+    public void create() {
+        screenHeight = Gdx.graphics.getHeight();
+        screenWidth = Gdx.graphics.getWidth();
+
+        sr = new ShapeRenderer();
+        c1 = new Circles();
+        bat = new Bat();
+        velocity = new Vector2(200, 200);
+    }
+
+    @Override
+    public void render() {
+
+        //Getters for floats
+        float x = c1.getX();
+        float y = c1.getY();
+        float radius1 = c1.getRadius1();
+        float rx = bat.getRx();
+        float ry = bat.getRy();
+        float rh = bat.getRh();
+        float rw = bat.getRw();
+
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        c1.setPosition(c1.getX() + velocity.x * deltaTime, c1.getY() + velocity.y * deltaTime);
+
+        //Draws circles
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.circle(x, y, radius1);
+        sr.end();
+
+        //Draws bat
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.rect(rx, ry, rw, rh);
+        sr.end();
+
+        batch.begin();
+        BricksArray.draw(batch);
+        batch.end();
+
+        //Handles bounces on X-Axis
+        if (x + radius1 >= screenWidth) {
+            c1.setPosition(screenWidth - radius1 - 1, y);
+            velocity.x = -velocity.x;
+        }
+        if (x - radius1 <= 0) {
+            c1.setPosition(0 + radius1 + 1, y);
+            velocity.x = -velocity.x;
+        }
+
+        //Handles bounces on Y-Axis
+        if (y + radius1 >= screenHeight) {
+            c1.setPosition(x, screenHeight - radius1 - 1);
+            velocity.y = -velocity.y;
+        }
+        if (y - radius1 <= 0) {
+            c1.setPosition(x, 0 + radius1 + 1);
+            velocity.y = -velocity.y;
+        }
+
+        //Moves bat
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            bat.setPositionBat(rx - 5, ry);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            bat.setPositionBat(rx + 5, ry);
+            System.out.println(screenWidth);
+            System.out.println(screenHeight);
+        }
+        if (rx > screenWidth) {
+            bat.setPositionBat(0, ry);
+        }
+        if (rx < 0) {
+            bat.setPositionBat(screenWidth, ry);
+        }
+
+        //Circle to bat distance
+        Vector2 circle = new Vector2(x,y);
+        Vector2 rectangle = new Vector2(rx,ry);
+        float distance = circle.dst(rectangle);
+
+        //Circle to bat collision
+        if (distance < radius1 + rh){
+            c1.setPosition(x, ry+radius1+rh);
+            velocity.y = -velocity.y;
+        }
+
+    }
+}
