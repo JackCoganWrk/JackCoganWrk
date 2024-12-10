@@ -1,0 +1,28 @@
+package io.github.some_example_name;
+
+public class Circles {
+
+    // Floats
+    private float x = 300;
+    private float y = 300;
+    private float radius1 = 10;
+
+    //Getter methods for floats in this class
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
+    }
+    public float getRadius1() {
+        return radius1;
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+    public Circles() {
+    }
+}
+
