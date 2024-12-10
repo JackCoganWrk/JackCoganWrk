@@ -1,0 +1,34 @@
+package io.github.some_example_name;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+public class BricksArray {
+    static Array<Brick> bricks;
+    float brickWidth, brickHeight;
+    int rows, cols;
+
+    public void BrickGrid(int rows, int cols, float brickWidth, float brickHeight) {
+        this.rows = rows;
+        this.cols = cols;
+        this.brickWidth = brickWidth;
+        this.brickHeight = brickHeight;
+        BricksArray bricks1 [] = new BricksArray[10];
+        createBricksArray();
+    }
+    private void createBricksArray() {
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                float x = col * brickWidth;
+                float y = row * brickHeight;
+                bricks.add(new Brick(x, y, brickWidth, brickHeight));
+            }
+        }
+    }
+
+    public static void draw(SpriteBatch batch) {
+        for (Brick brick : bricks) {
+            brick.draw(batch);
+        }
+    }
+
+}
