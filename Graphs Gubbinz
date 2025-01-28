@@ -1,0 +1,28 @@
+import java.util.Arrays;
+import java.util.Scanner;
+public class Graph {
+
+    //Creates graph
+    String[][] array1 = new String[10][10];
+
+    Scanner s = new Scanner(System.in);
+
+    //Adds node A to graph
+
+    void NewNode() {
+        int i = 1;
+        if (i < 10 ){
+            System.out.println("Enter node name");
+            String userInput = s.nextLine();
+            array1[0][i] = userInput;
+            i++;
+        }
+    }
+
+    String NodeList(){
+        String arrayOut = System.out.println(Arrays.deepToString(array1));
+        return arrayOut;
+    }
+}
+
+
