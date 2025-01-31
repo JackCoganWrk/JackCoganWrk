@@ -1,0 +1,36 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+
+
+        boolean enterNum = true;
+
+        //Asks if user wants to enter number
+        while (enterNum == true) {
+            Scanner s = new Scanner(System.in);
+            System.out.println("Do you want to enter number? Enter '1' to proceed, '2' to stop program");
+            int userProceed = s.nextInt();
+            if (userProceed == 1) {
+
+                //User enters number
+                System.out.println("Enter number above 1");
+                int userNum = s.nextInt();
+
+                //Checks if number is above 1
+                if (userNum <= 1) {
+                    System.out.println("Number is not above 1");
+                }
+
+                //Checks if number is prime
+                for (int i = 0; i < userNum; i++) {
+                    int divNum = 1;
+                    int isPrime = userNum % divNum;
+                    divNum++;
+                }
+            } else if (userProceed == 2) {
+                System.out.println("Program end");
+
+            }
+        }
+    }
+}
