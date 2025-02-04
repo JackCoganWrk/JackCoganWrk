@@ -6,14 +6,13 @@ public class IterativeAdding {
         int addNum = s.nextInt();
 
 
-
-        int sum (addNum) {
-            while (addNum > 0) {
-                int total = addNum - 1;
-                System.out.println(total);
-            }
+        public int sum (int addNum) {
+        while (addNum > 0) {
+            System.out.println(addNum + sum(addNum - 1));
         }
     }
+    }
 }
+
 
 
