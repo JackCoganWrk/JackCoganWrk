@@ -1,26 +1,54 @@
 import java.util.Arrays;
 import java.util.Scanner;
-public class Graphs {
+public class Graph {
 
     //Creates graph
-    String[][] array1 = new String[10][10];
-
+    String[][] nodeNames = new String[10][10];
     Scanner s = new Scanner(System.in);
 
     //Adds node A to graph
 
-    public void NewNode() {
+    public void graphMaker() {
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println("Enter node name");
-            String nodeName = s.nextLine();
-            array1[0][i] = nodeName;
+        boolean newNode = true;
+        while (newNode == true) {
+            System.out.println("'1' to make new node, '2' to stop program");
+            int continueNodeMake = s.nextInt();
+
+            if (continueNodeMake == 1) {
+
+                int f = 0;
+                int i = 0;
+                while( i < 4) {
+                    System.out.println("Enter node name");
+                    String userInput = s.nextLine();
+                    nodeNames[i][f] = userInput;
+                    i++;
+                    f++;
+
+
+
+                    boolean printGraph = false;
+
+
+                    while (printGraph == false){
+                        System.out.println("'1' to print graph, '2' to continue");
+                        int userPrint = s.nextInt();
+                        if (userPrint == 1){
+                            System.out.println(nodeNames[i][f]);
+                        }
+                    }
+
+                }
+            } else if (continueNodeMake == 2) {
+                System.out.println("Program terminated");
+                newNode = false;
+            }
+
+            else {
+                System.out.println("Invalid response");
+            }
         }
-    }
-
-    public String NodeList(){
-        String arrayOut = System.out.println(Arrays.deepToString(array1));
-        return arrayOut;
     }
 }
 
