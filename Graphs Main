@@ -1,5 +1,6 @@
 public class Main {
     public static void main(String[] args) {
-       Graph g1 = new Graph();
+       Graph graphMaker = new Graph();
+       graphMaker.graphMaker();
     }
 }
