@@ -1,6 +1,9 @@
 public class Main {
     public static void main(String[] args) {
        Graph graphMaker = new Graph();
+       Graph newEdge = new Graph();
        graphMaker.graphMaker();
+       newEdge.newEdge();
+
     }
 }
