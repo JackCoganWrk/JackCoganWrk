@@ -1,43 +1,90 @@
-import java.util.Arrays;
 import java.util.Scanner;
 public class Graph {
 
     //Creates graph
-    String[]nodeNames = new String[10];
-    String[][]nodeAdjacency = new String[10][4000];
+    String[] nodeNames = new String[10];
+    String[][] nodeAdjacency = new String[10][10];
     Scanner s = new Scanner(System.in);
+
 
     //Adds node to graph
 
     public void graphMaker() {
 
         boolean newNode = true;
-        while (newNode == true) {
-            System.out.println("'1' to make new node, '2' to stop program");
+        while (newNode) {
+            System.out.println("'1' to make new node, '2' to stop making nodes");
             int continueNodeMake = s.nextInt();
 
             if (continueNodeMake == 1) {
 
-                for(int i = 0; i < 10; i++) {
+                for (int i = 0; i < 10; i++) {
                     System.out.println("Enter node name");
                     String userInput = s.nextLine();
-                    nodeNames[i]= userInput;
+                    nodeNames[i] = userInput;
+                    i++;
 
-                    for (String f: nodeNames){
+                    for (String f : nodeNames) {
                         System.out.println(f);
                     }
                 }
 
             } else if (continueNodeMake == 2) {
-                System.out.println("Program terminated");
+                System.out.println("Node making terminated");
                 newNode = false;
-            }
-
-            else {
+            } else {
                 System.out.println("Invalid response");
             }
         }
     }
+
+    public void newEdge() {
+
+        boolean validNode = true;
+
+        //User chooses nodes to make a vertex between
+        System.out.println("Enter a node number to begin vertex (0 to 9)");
+        int initialEdgeNode = s.nextInt();
+        System.out.println("Enter a node number to end vertex (0 to 9");
+        int endEdgeNode = s.nextInt();
+
+
+        while (validNode) {
+            //Ensures nodes are valid and part of the graph
+            if (initialEdgeNode < 0){
+                System.out.println("Invalid node");
+                validNode = false;
+            } else if (initialEdgeNode > 10) {
+                System.out.println("Invalid node");
+                validNode = false;
+            }
+            else
+
+
+            if (endEdgeNode < 0){
+                System.out.println("Invalid node");
+                validNode = false;
+            } else if (endEdgeNode> 10) {
+                System.out.println("Invalid node");
+                validNode = false;
+            }
+            else {
+                System.out.println("Valid node entered");
+            }
+
+            System.out.println(initialEdgeNode);
+            System.out.println(endEdgeNode);
+            for (int x = 0; x < 10; ) {
+                nodeAdjacency[x][0] = nodeNames[x];
+                x++;
+            }
+
+            //Prints 2d adjacency list array (Testing phase)
+            for (String[] row : nodeAdjacency) {
+                for (String t : row) {
+                    System.out.println(t);
+                }
+            }
+        }
+    }
 }
-
-
