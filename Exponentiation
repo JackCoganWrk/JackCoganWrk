@@ -1,0 +1,21 @@
+
+
+public class Main {
+    public static void main(String[] args) {
+        int[][] xY = new int [2][5];
+        xY [1][0] = 1;
+        xY [1][1] = 3;
+        xY [1][2] = 5;
+        xY [1][3] = 6;
+        xY [1][4] = 8;
+        xY [0][0] = 3;
+        xY [0][1] = 7;
+        xY [0][2] = 10;
+        xY [0][3] = 15;
+        xY [0][4] = 26;
+
+        System.out.println("Exponential formula: y = x . e^bx");
+        double logY = Math.log();
+        System.out.println(logY);
+    }
+}
