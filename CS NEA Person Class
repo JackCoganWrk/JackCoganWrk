@@ -1,0 +1,33 @@
+package io.github.some_example_name;
+
+import com.badlogic.gdx.Gdx;
+
+public class Person {
+
+
+        private float personX = 100;
+        private float personY = 100;
+
+
+        public float getPersonX() {
+            this.personX = personX;
+            return personX;
+        }
+
+        public float getPersonY() {
+            this.personY = personY;
+            return  personY;
+        }
+
+
+        public void setPosition(float personX, float personY){
+            this.personX = personX;
+            this.personY = personY;
+        }
+
+
+        public Person(){
+
+        }
+}
+
