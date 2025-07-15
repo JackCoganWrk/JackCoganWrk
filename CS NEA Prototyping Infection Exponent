@@ -1,0 +1,34 @@
+public class Main {
+    public static void main(String[] args) {
+
+        boolean infectious = false;
+        double initialAmount = 1.5;
+        double growthRate = 1 + 0.20;
+        int time = (int)(Math.random() * 101);
+        double yGrowth;
+        double yDecay;
+
+
+        yGrowth = initialAmount * Math.pow(growthRate, time);
+
+
+        System.out.println("final growth is " + yGrowth);
+
+        double decayRate = 1 - 0.20;
+
+        yDecay = initialAmount * Math.pow(decayRate, time);
+
+
+        System.out.println("final decay is " + yDecay);
+
+        if (yGrowth > 60000){
+            infectious = true;
+            System.out.println("infectious = " + infectious);
+        }
+        else {
+            System.out.println("infectious = " +infectious);
+
+        }
+    }
+}
+
