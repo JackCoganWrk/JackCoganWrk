@@ -1,0 +1,48 @@
+package io.github.some_example_name;
+
+public class Person {
+
+
+        private float personX = 150;
+        private float personY = 150;
+        private float personX2 = 100;
+        private float personY2 = 100;;
+        private float personX3 = (float) Math.random();
+        private float personY3= (float) Math.random();
+        private float radius = 10;
+
+
+
+
+        public float getPersonX() {
+            return personX;
+        }
+
+        public float getPersonY() {
+            return  personY;
+        }
+    public float getPersonX2() {
+        return personX2;
+    }
+
+    public float getPersonY2() {
+        return  personY2;
+    }
+
+
+        public void setPosition(float personX, float personY) {
+            this.personX = personX;
+            this.personY = personY;
+        }
+
+    public void setPosition2(float personX2, float personY2) {
+        this.personX2 = personX2;
+        this.personY2 = personY2;
+    }
+
+
+        public Person(){
+
+        }
+}
+
