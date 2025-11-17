@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 
+
 /** {@link ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     ShapeRenderer sr;
@@ -18,30 +19,35 @@ public class Main extends ApplicationAdapter {
 
     private Vector2 arrayVelocity;
 
+
     public Person p1;
     public Person p2;
     public Person p3;
-    public Person[] people = new Person[100];
-
+    public Town t1;
+    public int peopleLength = 10;
+    public Person[] people = new Person[peopleLength];
     private int screenWidth;
     private int screenHeight;
 
-    float col1 = (float)Math.random();
-    float col2 = (float)Math.random();
-    float col3 = (float)Math.random();
-    float col4 = (float)Math.random();
+    float col1 = (float) Math.random();
+    float col2 = (float) Math.random();
+    float col3 = (float) Math.random();
+    float col4 = (float) Math.random();
 
     @Override
     public void create() {
         p1 = new Person();
         p2 = new Person();
         p3 = new Person();
+        t1 = new Town();
+
         people = new Person[]{new Person()};
+
         sr = new ShapeRenderer();
         velocity = new Vector2(100, 100);
         velocity2 = new Vector2(150, 100);
         velocity3 = new Vector2(200, 200);
-        arrayVelocity = new Vector2(150, 150);
+        arrayVelocity = new Vector2((float) Math.random() * 101, (float) Math.random() * 101);
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
     }
@@ -49,13 +55,17 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         //Getters for Circles
-        int n;
+        int n = 0;
         float x = p1.getPersonX();
         float y = p1.getPersonY();
         float x2 = p2.getPersonX2();
         float y2 = p2.getPersonY2();
         float x3 = p3.getPersonX3();
         float y3 = p3.getPersonY3();
+        float arrayX = people[n].getArrayX();
+        float arrayY = people[n].getArrayY();
+        float town1x = t1.getTown1x();
+        float town1y = t1.getTown1y();
         float radius = 4;
 
         //Get time
@@ -63,25 +73,25 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         float time = Gdx.graphics.getDeltaTime();
 
-        //Set circle positions
-        //Set using array
-        for (n = 0; n< people.length; n++) {
-            people[n].setPositionArray(people[n].arrayX + arrayVelocity.x * time, people[n].arrayY + arrayVelocity.y * time);
+        //Set circle positions using array
+        for (Person person : people) {
+            people[n].setPositionArray(arrayX + arrayVelocity.x * time, arrayY + arrayVelocity.y * time);
+            n++;
         }
 
         //Array used to render the people instead of individual renderers
         int i = 0;
-        for (Person person : people){
+        for (Person person : people) {
             sr.begin(ShapeRenderer.ShapeType.Filled);
-            sr.setColor(col1, col2, col3,col4);
-            sr.circle(x + i, y, radius);
+            sr.setColor(col1, col2, col3, col4);
+            sr.circle(arrayX + i, arrayY, radius);
             sr.end();
-            i += 10;
+            i += 30;
         }
 
-        //p1.setPosition(p1.getPersonX() + velocity.x * time, p1.getPersonY() + velocity.y * time);
-        //p2.setPosition2(p2.getPersonX2() + velocity2.x * time, p2.getPersonY2() + velocity2.y * time);
-        //p3.setPosition3(p3.getPersonX3() + velocity3.x * time, p3.getPersonY3() + velocity3.y * time);
+        p1.setPosition(p1.getPersonX() + velocity.x * time, p1.getPersonY() + velocity.y * time);
+        p2.setPosition2(p2.getPersonX2() + velocity2.x * time, p2.getPersonY2() + velocity2.y * time);
+        p3.setPosition3(p3.getPersonX3() + velocity3.x * time, p3.getPersonY3() + velocity3.y * time);
 
         //sr.begin(ShapeRenderer.ShapeType.Filled);
         //sr.setColor(0.15f, 1f, 0.15f, 0.15f);
@@ -98,39 +108,36 @@ public class Main extends ApplicationAdapter {
         //sr.circle(x3, y3, radius);
         //sr.end();
 
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.setColor(5f, 5f, 0f, 0f);
+        sr.circle(town1x, town1y, 50);
+        sr.end();
         //X-Axis bounces
         if (x + radius >= screenWidth) {
             p1.setPosition(screenWidth - radius - 2, y);
             velocity.x = velocity.x * -1;
         }
-        if (x2 + radius + 1 >= screenWidth){
+        if (x2 + radius + 1 >= screenWidth) {
             p2.setPosition2(screenWidth - radius - 2, y2);
             velocity2.x = velocity2.x * -1;
         }
-        if (x3 + radius + 1 >= screenWidth){
-            p3.setPosition3(screenWidth - radius - 2, 3);
+        if (x3 + radius + 1 >= screenWidth) {
+            p3.setPosition3(screenWidth - radius - 2, y3);
             velocity3.x = velocity3.x * -1;
         }
 
         //Array Circle Collisions
 
 
-
-
-
-
-
-
-
         if (x - radius - 1 <= 0) {
             p1.setPosition(0 + radius + 2, y);
             velocity.x = velocity.x * -1;
         }
-        if (x2 - radius - 1 <= 0){
+        if (x2 - radius - 1 <= 0) {
             p2.setPosition2(0 + radius + 2, y2);
             velocity2.x = velocity2.x * -1;
         }
-        if (x3 - radius - 1 <= 0){
+        if (x3 - radius - 1 <= 0) {
             p3.setPosition3(0 + radius + 2, y3);
             velocity3.x = velocity3.x * -1;
         }
@@ -141,27 +148,26 @@ public class Main extends ApplicationAdapter {
             p1.setPosition(x, screenHeight - radius - 2);
             velocity.y = velocity.y * -1;
         }
-        if (y2 + radius + 1 >= screenHeight){
+        if (y2 + radius + 1 >= screenHeight) {
             p2.setPosition2(x2, screenHeight - radius - 2);
             velocity2.y = velocity2.y * -1;
         }
-        if (y3 + radius + 1 >= screenHeight ){
-            p3.setPosition3(x3, screenHeight - radius - 30);
+        if (y3 + radius + 1 >= screenHeight) {
+            p3.setPosition3(x3, screenHeight - radius - 2);
             velocity3.y = velocity3.y * -1;
         }
         if (y - radius - 1 <= 0) {
             p1.setPosition(x, 0 + radius + 2);
             velocity.y *= -1;
         }
-        if(y2 - radius - 1 <= 0){
+        if (y2 - radius - 1 <= 0) {
             p2.setPosition2(x2, 0 + radius + 2);
             velocity2.y *= -1;
         }
-        if(y3 - radius - 1 <= 0){
+        if (y3 - radius - 1 <= 0) {
             p3.setPosition3(x3, 0 + radius + 2);
             velocity3.y *= -1;
         }
-
 
 
         //Person collisions
@@ -169,29 +175,42 @@ public class Main extends ApplicationAdapter {
         Vector2 dist2Num = new Vector2(x2, y2);
         float distance = dist1Num.dst(dist2Num);
 
-        if (distance <= (radius*2) + 1 && x <= x2){
+        if (distance <= (radius * 2) + 1 && x <= x2) {
             velocity.x = velocity.x * -1;
             velocity2.x = velocity2.x * -1;
             p1.setPosition(x - 3, y);
         }
 
-        if (distance <= (radius*2) + 1 && x >= x2){
+        if (distance <= (radius * 2) + 1 && x >= x2) {
             velocity.x = velocity.x * -1;
             velocity2.x = velocity2.x * -1;
             p1.setPosition(x + 3, y);
         }
 
-        if (distance <= (radius*2) + 1 && y <= y2){
+        if (distance <= (radius * 2) + 1 && y <= y2) {
             velocity.y = velocity.y * -1;
             velocity2.y = velocity2.y * -1;
             p1.setPosition(x, y - 3);
         }
 
-        if (distance <= (radius*2) + 1 && y >= y2){
+        if (distance <= (radius * 2) + 1 && y >= y2) {
             velocity.y = velocity.y * -1;
             velocity2.y = velocity2.y * -1;
             p1.setPosition(x, y + 3);
         }
+
+
+        //TOWN STUFF
+        //Person to Town collision
+        Vector2 distPersonTown1 = new Vector2(arrayX, arrayY);
+        Vector2 town1Vector = new Vector2(town1x, town1y);
+        float distancePT1 = distPersonTown1.dst(town1Vector);
+        for (Person person : people) {
+            if (distancePT1 <= 50){
+                System.out.println("HELLO");
+            }
+        }
+
     }
 }
 
@@ -232,6 +251,12 @@ public class Person {
         public float getPersonY3 (){
             return personY3;
         }
+        public float getArrayX(){
+            return arrayX;
+        }
+        public float getArrayY(){
+            return arrayY;
+        }
 
 
 
@@ -252,5 +277,28 @@ public class Person {
     public void setPositionArray(float arrayX, float arrayY){
             this.arrayX = arrayX;
             this.arrayY = arrayY;
+    }
+}
+
+//TOWN CLASS
+
+package io.github.some_example_name;
+
+public class Town {
+    private float townRadius = 50;
+    public float getTownRadius (){
+        return townRadius;
+    }
+    private float town1x = (float) Math.random() * 1010;
+    public float getTown1x (){
+        return town1x;
+    }
+    private float town1y = (float) Math.random() * 1010;
+    public float getTown1y(){
+        return town1y;
+    }
+    public void setPositionTown(float town1x, float town1y) {
+        this.town1x = town1x;
+        this.town1y = town1y;
     }
 }
