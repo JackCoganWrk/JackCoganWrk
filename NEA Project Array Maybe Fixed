@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
     public Person p1;
     public Person p2;
     public Person p3;
-   // public Town t1;
+    // public Town t1;
     public int peopleLength = 10;
     public Person[] people = new Person[peopleLength];
     private int screenWidth;
@@ -34,9 +34,9 @@ public class Main extends ApplicationAdapter {
     float col4 = (float) Math.random();
     float randX = (float) Math.random() * 101;
     float randY = (float) Math.random() * 101;
-    float add = 20;
-    float circleX = 10;
-    float circleY = 10;
+    float circleX = 100;
+    float circleY = 100;
+    float circleRadius = 5;
 
 
 
@@ -45,7 +45,7 @@ public class Main extends ApplicationAdapter {
         p1 = new Person(120, 120, col1);
         p2 = new Person(140, 140, col2);
         p3 = new Person(160, 160, col4);
-     //   t1 = new Town();
+        //   t1 = new Town();
 
 
 
@@ -53,7 +53,7 @@ public class Main extends ApplicationAdapter {
         peopleARRAY = new Array<>();
         int f = 0;
         for (int i = 0; i <= 9; i++) {
-            Person person1 = new Person(circleX + f, circleY, 5);
+            Person person1 = new Person(circleX + f, circleY, circleRadius);
             peopleARRAY.add(person1);
             f += 11;
         }
@@ -61,7 +61,7 @@ public class Main extends ApplicationAdapter {
         //people = new Person[]{new Person()};
 
         sr = new ShapeRenderer();
-        velocity = new Vector2(100, 100);
+        velocity = new Vector2(200, 100);
         velocity2 = new Vector2(150, 100);
         velocity3 = new Vector2(200, 200);
         screenWidth = Gdx.graphics.getWidth();
@@ -80,8 +80,8 @@ public class Main extends ApplicationAdapter {
         float y3 = p3.getPersonY3();
         //float arrayX = people[n].getArrayX();
         //float arrayY = people[n].getArrayY();
-       // float town1x = t1.getTown1x();
-      //  float town1y = t1.getTown1y();
+        // float town1x = t1.getTown1x();
+        //  float town1y = t1.getTown1y();
         float radius = 4;
 
         //Get time
@@ -95,13 +95,8 @@ public class Main extends ApplicationAdapter {
         //n++;
         //}
 
-
-        //CALL SETPOSITION ON THIS ARRAY
-        //DO THIS
-        //WORK THIS OUT
-
         for (Person person : peopleARRAY){
-            person.movePerson(person.circleX + velocity.x * time, person.circleY + velocity.y * time);
+            person.setPersonPosition(person.circleX + velocity.x * time, person.circleY + velocity.y * time);
         }
 
         for (Person person : peopleARRAY){
@@ -109,9 +104,23 @@ public class Main extends ApplicationAdapter {
         }
 
         for (Person person : peopleARRAY){
-            person.checkBoundary();
+            if (person.circleX - circleRadius - 2 <= 0) {
+                person.setPersonPosition(0 + circleRadius + 2, person.circleY);
+                person.velocity.x = person.velocity.x * -1;
+            }
+            if (person.circleX + circleRadius  >= screenWidth) {
+                person.setPersonPosition(person.screenWidth - circleRadius - 2, person.circleY);
+                person.velocity.x = person.velocity.x * -1;
+            }
+            if (person.circleY - circleRadius - 2 <= 0) {
+                person.setPersonPosition(person.circleX, 0 + circleRadius + 2);
+                person.velocity.y = person.velocity.y * -1;
+            }
+            if (person.circleY + circleRadius >= screenHeight) {
+                person.setPersonPosition(person.screenWidth, person.screenHeight - person.circleY - 2);
+                person.velocity.y = person.velocity.y * -1;
+            }
         }
-
 
         //p1.setPosition(p1.getPersonX() + velocity.x * time, p1.getPersonY() + velocity.y * time);
         //p2.setPosition2(p2.getPersonX2() + velocity2.x * time, p2.getPersonY2() + velocity2.y * time);
@@ -191,10 +200,6 @@ public class Main extends ApplicationAdapter {
             velocity3.y *= -1;
         }
 
-        for (Person person : peopleARRAY) {
-            //    if (x < )
-        }
-
         //Person collisions
         Vector2 dist1Num = new Vector2(x, y);
         Vector2 dist2Num = new Vector2(x2, y2);
@@ -227,7 +232,7 @@ public class Main extends ApplicationAdapter {
 }
 
 
-////PERSON CLASS
+///PERSON CLASS
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
@@ -243,11 +248,10 @@ public class Person {
     private float personX2 = 100;
     private float personY2 = 100;
     private float personX3 = 100;
-    private float personY3= 200;
+    private float personY3 = 200;
     public float arrayX = 150;
     public float arrayY = 150;
-    public Vector2 velocity = new Vector2(100, 100);
-
+    public Vector2 velocity = new Vector2(200, 100);
 
 
     private Vector2 circleVelocity;
@@ -256,32 +260,39 @@ public class Person {
     private float circleRadius;
 
 
-
     //Getters
     public float getPersonX() {
         return personX;
     }
+
     public float getPersonY() {
-        return  personY;
+        return personY;
     }
+
     public float getPersonX2() {
         return personX2;
     }
+
     public float getPersonY2() {
-        return  personY2;
+        return personY2;
     }
-    public float getPersonX3(){
+
+    public float getPersonX3() {
         return personX3;
     }
-    public float getPersonY3 (){
+
+    public float getPersonY3() {
         return personY3;
     }
-    public float getArrayX(){
+
+    public float getArrayX() {
         return arrayX;
     }
-    public float getArrayY(){
+
+    public float getArrayY() {
         return arrayY;
     }
+
     float time = Gdx.graphics.getDeltaTime();
 
 
@@ -290,60 +301,64 @@ public class Person {
         this.personX = personX;
         this.personY = personY;
     }
+
     public void setPosition2(float personX2, float personY2) {
         this.personX2 = personX2;
         this.personY2 = personY2;
     }
-    public void setPosition3 (float personX3, float personY3){
+
+    public void setPosition3(float personX3, float personY3) {
         this.personX3 = personX3;
         this.personY3 = personY3;
     }
 
-    public void setPeopleArrayPosition(float v, float v1){
+    public void setPeopleArrayPosition(float v, float v1) {
         this.arrayX = arrayX;
         this.arrayY = arrayY;
     }
 
-    public Person(float circleX,float circleY, float circleRadius){
+    public Person(float circleX, float circleY, float circleRadius) {
         this.circleX = circleX;
         this.circleY = circleY;
         this.circleRadius = circleRadius;
     }
-    public void renderShape(ShapeRenderer shapeRenderer){
+
+    public void setPersonPosition(float circleX, float circleY) {
+        this.circleX = circleX;
+        this.circleY = circleY;
+    }
+
+    public void renderShape(ShapeRenderer shapeRenderer) {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(circleX, circleY, circleRadius);
         shapeRenderer.setColor(0.0f, 100f, 0.0f, 0.0f);
         shapeRenderer.end();
     }
-    public void movePerson (float circleX, float circleY){
-        this.circleX = circleX;
-        this.circleY = circleY;
-    }
+
+
 
 
     int screenHeight = Gdx.graphics.getHeight();
     int screenWidth = Gdx.graphics.getWidth();
 
 
+    public void checkBoundary() {
+            if (circleX - 6 <= 0) {
+                setPersonPosition(100, circleY);
+                velocity.x = velocity.x * -1;
 
-   public void checkBoundary (){
-            if (circleX <= 0){
-                
+            }
+            if (circleX + 6 >= screenWidth) {
+                setPersonPosition(screenWidth - 8, circleY);
                 velocity.x = velocity.x * -1;
             }
-            if (circleX >= screenWidth){
-                circleX = screenWidth - 6;
-                velocity.x = velocity.x * -1;
-            }
-            if (circleY <= 0){
-                circleY = 6;
+            if (circleY - 6 <= 0) {
+                setPersonPosition(circleX, 6);
                 velocity.y = velocity.y * -1;
             }
-            if (circleY >= screenHeight){
-                circleY = screenHeight - 6;
+            if (circleY + 6 >= screenHeight) {
+                setPersonPosition(circleX, screenHeight - 6);
                 velocity.y = velocity.y * -1;
             }
         }
     }
-
-
