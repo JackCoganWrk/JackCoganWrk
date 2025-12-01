@@ -8,25 +8,28 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import jdk.internal.org.jline.utils.OSUtils;
-
+import java.util.Scanner;
 
 /** {@link ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     ShapeRenderer sr;
+    ShapeRenderer sr2;
     public Vector2 velocity;
     private Vector2 velocity2;
     private Vector2 velocity3;
+    Scanner s = new Scanner(System.in);
 
-
-    public Array<Person> peopleARRAY = new Array<>(100);
+    public Array<Person> peopleARRAY = new Array<>();
+    public Array<Town> townARRAY = new Array<>();
     public Person p1;
     public Person p2;
     public Person p3;
-    // public Town t1;
+    public Town t1;
     public int peopleLength = 10;
     public Person[] people = new Person[peopleLength];
     private int screenWidth;
     private int screenHeight;
+    public boolean collisionTownsCircles;
 
     float col1 = (float) Math.random();
     float col2 = (float) Math.random();
@@ -34,33 +37,45 @@ public class Main extends ApplicationAdapter {
     float col4 = (float) Math.random();
     float randX = (float) Math.random() * 101;
     float randY = (float) Math.random() * 101;
-    float circleX = 100;
-    float circleY = 100;
+    float circleX = (float) Math.random() * 101;
+    float circleY = (float) Math.random() * 101;
     float circleRadius = 5;
 
-
+    public boolean getCollisionTownsCircles(){
+       return collisionTownsCircles;
+    }
 
     @Override
     public void create() {
         p1 = new Person(120, 120, col1);
         p2 = new Person(140, 140, col2);
         p3 = new Person(160, 160, col4);
-        //   t1 = new Town();
 
+        System.out.println("ENTER PEOPLE ARRAY SIZE");
 
+        int arrayPeopleSize = s.nextInt();
+        peopleARRAY = new Array<>(arrayPeopleSize);
 
+        System.out.println("ENTER TOWN ARRAY SIZE");
+        int arrayTownSize = s.nextInt();
 
-        peopleARRAY = new Array<>();
+        townARRAY = new Array<>(arrayTownSize);
         int f = 0;
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= arrayPeopleSize - 1; i++) {
             Person person1 = new Person(circleX + f, circleY, circleRadius);
             peopleARRAY.add(person1);
             f += 11;
         }
 
+        for (int i = 0; i <= arrayTownSize - 1; i++){
+            Town town = new Town();
+            townARRAY.add(town);
+        }
+
         //people = new Person[]{new Person()};
 
         sr = new ShapeRenderer();
+        sr2 = new ShapeRenderer();
         velocity = new Vector2(200, 100);
         velocity2 = new Vector2(150, 100);
         velocity3 = new Vector2(200, 200);
@@ -103,102 +118,53 @@ public class Main extends ApplicationAdapter {
             person.renderShape(sr);
         }
 
+        for (Town town : townARRAY){
+            town.renderTown(sr2);
+        }
+
         for (Person person : peopleARRAY){
-            if (person.circleX - circleRadius - 2 <= 0) {
-                person.setPersonPosition(0 + circleRadius + 2, person.circleY);
-                person.velocity.x = person.velocity.x * -1;
+
+            if (person.circleX - circleRadius - circleRadius <= 0) {
+                person.setPersonPosition(0 + circleRadius * 3, person.circleY);
+                person.velocity.x = velocity.x * -1;
             }
-            if (person.circleX + circleRadius  >= screenWidth) {
-                person.setPersonPosition(person.screenWidth - circleRadius - 2, person.circleY);
-                person.velocity.x = person.velocity.x * -1;
+
+            if (person.circleX + circleRadius + 2 >= screenWidth) {
+                person.setPersonPosition(person.circleX - circleRadius - 4, person.circleY);
+                person.velocity.x *= -1;
             }
-            if (person.circleY - circleRadius - 2 <= 0) {
-                person.setPersonPosition(person.circleX, 0 + circleRadius + 2);
-                person.velocity.y = person.velocity.y * -1;
+
+            if (person.circleY - circleRadius - circleRadius <= 0) {
+                person.setPersonPosition(person.circleX, 0 + circleRadius + circleRadius);
+                person.velocity.y = velocity.y * -1;
             }
-            if (person.circleY + circleRadius >= screenHeight) {
-                person.setPersonPosition(person.screenWidth, person.screenHeight - person.circleY - 2);
-                person.velocity.y = person.velocity.y * -1;
+
+            if (person.circleY + circleRadius + circleRadius >= screenHeight) {
+                person.setPersonPosition(person.circleX, person.circleY - circleRadius - circleRadius);
+                person.velocity.y = velocity.y * -1;
+            }
+
+        }
+
+
+        for (Person person : peopleARRAY){
+            for (Town town : townARRAY){
+                Vector2 circleDst = new Vector2(person.circleX, person.circleY);
+                Vector2 townDst = new Vector2(town.getTown1x(), town.getTown1y());
+                float distance = circleDst.dst(townDst);
+
+                if (distance <= 5 + town.getTownRadius()){
+                    person.velocity.x *= -1;
+                    person.velocity.y *= -1;
+                    collisionTownsCircles = true;
+                }
             }
         }
 
-        //p1.setPosition(p1.getPersonX() + velocity.x * time, p1.getPersonY() + velocity.y * time);
-        //p2.setPosition2(p2.getPersonX2() + velocity2.x * time, p2.getPersonY2() + velocity2.y * time);
-        //p3.setPosition3(p3.getPersonX3() + velocity3.x * time, p3.getPersonY3() + velocity3.y * time);
-
-        //sr.begin(ShapeRenderer.ShapeType.Filled);
-        //sr.setColor(0.15f, 1f, 0.15f, 0.15f);
-        //sr.circle(x, y, radius);
-        //sr.end();
-
-        //sr.begin(ShapeRenderer.ShapeType.Filled);
-        //sr.setColor(1f, 1f, 5f, 0.15f);
-        //sr.circle(x2, y2, radius);
-        //sr.end();
-
-        //sr.begin(ShapeRenderer.ShapeType.Filled);
-        //sr.setColor(5f, 0.15f, 0.15f, 0.15f);
-        //sr.circle(x3, y3, radius);
-        //sr.end();
-
-        //sr.begin(ShapeRenderer.ShapeType.Filled);
-        //sr.setColor(5f, 5f, 0f, 0f);
-        //sr.circle(town1x, town1y, 50);
-        //sr.end();
-        //X-Axis bounces
-        if (x + radius >= screenWidth) {
-            p1.setPosition(screenWidth - radius - 2, y);
-            velocity.x = velocity.x * -1;
-        }
-        if (x2 + radius + 1 >= screenWidth) {
-            p2.setPosition2(screenWidth - radius - 2, y2);
-            velocity2.x = velocity2.x * -1;
-        }
-        if (x3 + radius + 1 >= screenWidth) {
-            p3.setPosition3(screenWidth - radius - 2, y3);
-            velocity3.x = velocity3.x * -1;
-        }
-
-        //Array Circle Collisions
-        if (x - radius - 1 <= 0) {
-            p1.setPosition(0 + radius + 2, y);
-            velocity.x = velocity.x * -1;
-        }
-        if (x2 - radius - 1 <= 0) {
-            p2.setPosition2(0 + radius + 2, y2);
-            velocity2.x = velocity2.x * -1;
-        }
-        if (x3 - radius - 1 <= 0) {
-            p3.setPosition3(0 + radius + 2, y3);
-            velocity3.x = velocity3.x * -1;
-        }
 
 
-        //Y-Axis bounces
-        if (y + radius + 1 >= screenHeight) {
-            p1.setPosition(x, screenHeight - radius - 2);
-            velocity.y = velocity.y * -1;
-        }
-        if (y2 + radius + 1 >= screenHeight) {
-            p2.setPosition2(x2, screenHeight - radius - 2);
-            velocity2.y = velocity2.y * -1;
-        }
-        if (y3 + radius + 1 >= screenHeight) {
-            p3.setPosition3(x3, screenHeight - radius - 2);
-            velocity3.y = velocity3.y * -1;
-        }
-        if (y - radius - 1 <= 0) {
-            p1.setPosition(x, 0 + radius + 2);
-            velocity.y *= -1;
-        }
-        if (y2 - radius - 1 <= 0) {
-            p2.setPosition2(x2, 0 + radius + 2);
-            velocity2.y *= -1;
-        }
-        if (y3 - radius - 1 <= 0) {
-            p3.setPosition3(x3, 0 + radius + 2);
-            velocity3.y *= -1;
-        }
+
+
 
         //Person collisions
         Vector2 dist1Num = new Vector2(x, y);
@@ -228,11 +194,18 @@ public class Main extends ApplicationAdapter {
             velocity2.y = velocity2.y * -1;
             p1.setPosition(x, y + 3);
         }
+
+
+
+
+
+
     }
 }
 
 
-///PERSON CLASS
+
+
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
@@ -362,3 +335,50 @@ public class Person {
             }
         }
     }
+
+package io.github.some_example_name;
+
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+public class Town {
+    private float townRadius = 50;
+
+
+    public float getTownRadius (){
+        return townRadius;
+    }
+    private float town1x = (float) Math.random() * 1010;
+    public float getTown1x (){
+        return town1x;
+    }
+    private float town1y = (float) Math.random() * 1010;
+    public float getTown1y(){
+        return town1y;
+    }
+    public void setPositionTown(float town1x, float town1y) {
+        this.town1x = town1x;
+        this.town1y = town1y;
+    }
+
+    public void renderTown (ShapeRenderer shapeRenderer2){
+        shapeRenderer2.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer2.circle(getTown1x(), getTown1y(), getTownRadius());
+        shapeRenderer2.setColor(100f, 100f,0f, 0f);
+        shapeRenderer2.end();
+    }
+
+    public void checkCollisionTown(){
+
+    }
+}
+
+
+
+package io.github.some_example_name;
+
+public class Infect  {
+    boolean collisionTownsCircles = ;
+    public Infect(){
+
+    }
+}
