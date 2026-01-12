@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
     private int screenHeight;
     float circleRadius = 3;
     float infectChance = 0.2f;
-    float transportChance = 0.2f;
+    float transportChance = 0.05f;
     float infectRoll;
     float transportRoll;
     float whichTransport;
@@ -36,19 +36,20 @@ public class Main extends ApplicationAdapter {
 
         try {
 
-            System.out.println("ENTER PEOPLE ARRAY SIZE");
+            System.out.println("ENTER PEOPLE NUMBER");
             arrayPeopleSize = s.nextInt();
             peopleARRAY = new Array<>(arrayPeopleSize);
 
-            System.out.println("ENTER TOWN ARRAY SIZE");
+            System.out.println("ENTER TOWN NUMBER");
             arrayTownSize = s.nextInt();
             townARRAY = new Array<>(arrayTownSize);
 
         } catch (Exception e) {
 
             System.out.println("ERROR DETECTED: INVALID INPUT");
-            System.out.println("PLEASE RESET PROGRAM AND ENTER AN INTEGER TO CONTINUE");
+            System.out.println("PLEASE RESET PROGRAM AND ENTER INTEGERS TO CONTINUE");
 
+            System.out.println("RETARD");
         }
 
         for (int i = 0; i <= arrayTownSize - 1; i++) {
@@ -107,7 +108,7 @@ public class Main extends ApplicationAdapter {
             town.renderTown(sr2);
         }
 
-        for (Transport transport : transportArray){
+        for (Transport transport : transportArray) {
             transport.renderTransport(sr3);
         }
 
@@ -153,19 +154,52 @@ public class Main extends ApplicationAdapter {
                         person.green = 0f;
                         person.red = 100f;
                     }
-
-                    transportRoll = (float) Math.random();
-                    if (transportRoll <= transportChance) {
-                        whichTransport = (float)Math.random() * transportArray.size;
-                        int whichTransportINT = (int) whichTransport;
-                        Transport transport = transportArray.get(whichTransportINT);
-
-                        person.velocity.x = transport.vertex3X - transport.vertex1X;
-                        person.velocity.y = transport.vertex3Y - transport.vertex1Y;
-                    }
                 }
             }
         }
+
+        for (Person person : peopleARRAY){
+            for (int f = 0; f < townARRAY.size; f++) {
+                for (int g = 1; g < townARRAY.size; g++) {
+
+
+                    transportRoll = (float) Math.random();
+
+                    if (transportRoll <= transportChance) {
+
+                        whichTransport = (float) Math.random() * transportArray.size;
+                        int whichTransportINT = (int) whichTransport;
+                        Transport transport = transportArray.get(whichTransportINT);
+
+                            if (transport.vertex1X < transport.vertex3X){
+                                person.setPersonPosition(townARRAYa);
+                                person.velocity.x = townARRAY.get(g).getTown1x() - townARRAY.get(f).getTown1x();
+                                person.velocity.y = townARRAY.get(g).getTown1y() - townARRAY.get(g).getTown1y();
+                            }
+
+                        }
+                    }
+                }
+        }
+
+        //if (transport.vertex1X < transport.vertex3X) {
+        //    peopleARRAY.get(i).setPersonPosition(townARRAY.get(f).getTown1x() + townARRAY.get(f).getTownRadius() + circleRadius + 3, townARRAY.get(f).getTown1y() + townARRAY.get(f).getTownRadius() + circleRadius + 3);
+        //    peopleARRAY.get(i).velocity.x = townARRAY.get(g).getTown1x() - townARRAY.get(f).getTown1x();
+        //    peopleARRAY.get(i).velocity.y = townARRAY.get(g).getTown1y() - townARRAY.get(f).getTown1y();
+        //}
+
+        //if (transport.vertex1X > transport.vertex3X){
+        //    peopleARRAY.get(i).setPersonPosition(townARRAY.get(i).getTown1x() - townARRAY.get(i).getTownRadius() - circleRadius - 3, townARRAY.get(i).getTown1y() - townARRAY.get(i).getTownRadius() - circleRadius - 3);
+        //    peopleARRAY.get(i).velocity.x = townARRAY.get(g).getTown1x() + townARRAY.get(f).getTown1x();
+        //    peopleARRAY.get(i).velocity.y = townARRAY.get(g).getTown1y() + townARRAY.get(f).getTown1y();
+        //}
+
+        float y1 = 7;
+        float y2 = 500;
+        float x1 = 67;
+        float x2 = 500;
+        float gradient = (y2 - y1) / (x2 - x1);
+        //System.out.println("GRADIENT = " + gradient);
 
         for (int i = 0; i <= peopleARRAY.size - 1; i++) {
             for (int a = i + 1; a <= peopleARRAY.size - 1; a++) {
@@ -183,9 +217,9 @@ public class Main extends ApplicationAdapter {
                         p2.velocity.x *= -1;
                         p2.velocity.y *= -1;
 
-                        float infectRoll = (float)Math.random();
-                        if (p1.red == 100f){
-                            if (infectRoll <= infectChance){
+                        float infectRoll = (float) Math.random();
+                        if (p1.red == 100f) {
+                            if (infectRoll <= infectChance) {
                                 p2.green = 0f;
                                 p2.red = 100f;
                             }
@@ -194,6 +228,7 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
+
     }
 }
 
@@ -339,11 +374,11 @@ public class Town {
     public float getTownRadius (){
         return townRadius;
     }
-    private float town1x = (float) Math.random() * 1010;
+    private float town1x;
     public float getTown1x (){
         return town1x;
     }
-    private float town1y = (float) Math.random() * 1010;
+    private float town1y;
     public float getTown1y(){
         return town1y;
     }
@@ -354,10 +389,6 @@ public class Town {
         shapeRenderer2.setColor(100f, 100f,0f, 0f);
         shapeRenderer2.end();
     }
-
-    public void checkCollisionTown(){
-
-    }
 }
 
 package io.github.some_example_name;
@@ -367,7 +398,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class Transport {
 
     float vertex1X, vertex1Y, vertex2X, vertex2Y, vertex3X, vertex3Y, vertex4X, vertex4Y;
-    public float[] vertices = {vertex1X, vertex1Y, vertex2X, vertex2Y, vertex3X, vertex3Y, vertex4X, vertex4Y};
+    public float[] vertices;
 
     public Transport (float [] vertices){
         this.vertices = vertices;
