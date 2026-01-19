@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import javax.swing.*;
 import java.util.Scanner;
 
 /** {@link ApplicationListener} implementation shared by all platforms. */
@@ -20,14 +22,15 @@ public class Main extends ApplicationAdapter {
     public Array<Person> peopleARRAY = new Array<>();
     public Array<Town> townARRAY = new Array<>();
     public Array<Transport> transportArray = new Array<>();
+    int [] nearTrans = new int[100];
     private int screenWidth;
     private int screenHeight;
     float circleRadius = 3;
     float infectChance = 0.2f;
-    float transportChance = 0.05f;
+    float transportChance = 0.2f;
     float infectRoll;
-    float transportRoll;
-    float whichTransport;
+    float transportRoll = (float) Math.random();
+
 
     @Override
     public void create() {
@@ -138,6 +141,7 @@ public class Main extends ApplicationAdapter {
 
         for (Person person : peopleARRAY) {
             for (Town town : townARRAY) {
+
                 Vector2 circleDst = new Vector2(person.circleX, person.circleY);
                 Vector2 townDst = new Vector2(town.getTown1x(), town.getTown1y());
                 float distance = circleDst.dst(townDst);
@@ -147,52 +151,33 @@ public class Main extends ApplicationAdapter {
                     if (person.velocity.x > person.velocity.y) {
                         person.velocity.x *= -1;
                     }
+
                     if (person.velocity.y > person.velocity.x) {
                         person.velocity.y *= -1;
                     }
+
                     if (infectRoll <= infectChance) {
                         person.green = 0f;
                         person.red = 100f;
+
+                        int i = 0;
+                        if (transportChance >= transportRoll) {
+                            float whichTransport = (float) Math.random() * transportArray.size;
+                            int whichTransportINT = (int) whichTransport;
+
+                            Transport transport = transportArray.get(whichTransportINT);
+
+                            Vector2 transDst = new Vector2(transport.vertex3X - transport.vertex1X, transport.vertex3Y - transport.vertex1Y);
+
+                            person.setPersonPosition((transport.vertex3X - transport.vertex1X) * town.getTownRadius() * 1.1f, (transport.vertex3Y - transport.vertex1Y) * town.getTownRadius() * 1.1f);
+                            person.velocity.x = transDst.x;
+                            person.velocity.y = transDst.y;
+                        }
                     }
                 }
             }
         }
 
-        for (Person person : peopleARRAY){
-            for (int f = 0; f < townARRAY.size; f++) {
-                for (int g = 1; g < townARRAY.size; g++) {
-
-
-                    transportRoll = (float) Math.random();
-
-                    if (transportRoll <= transportChance) {
-
-                        whichTransport = (float) Math.random() * transportArray.size;
-                        int whichTransportINT = (int) whichTransport;
-                        Transport transport = transportArray.get(whichTransportINT);
-
-                            if (transport.vertex1X < transport.vertex3X){
-                                person.setPersonPosition(townARRAYa);
-                                person.velocity.x = townARRAY.get(g).getTown1x() - townARRAY.get(f).getTown1x();
-                                person.velocity.y = townARRAY.get(g).getTown1y() - townARRAY.get(g).getTown1y();
-                            }
-
-                        }
-                    }
-                }
-        }
-
-        //if (transport.vertex1X < transport.vertex3X) {
-        //    peopleARRAY.get(i).setPersonPosition(townARRAY.get(f).getTown1x() + townARRAY.get(f).getTownRadius() + circleRadius + 3, townARRAY.get(f).getTown1y() + townARRAY.get(f).getTownRadius() + circleRadius + 3);
-        //    peopleARRAY.get(i).velocity.x = townARRAY.get(g).getTown1x() - townARRAY.get(f).getTown1x();
-        //    peopleARRAY.get(i).velocity.y = townARRAY.get(g).getTown1y() - townARRAY.get(f).getTown1y();
-        //}
-
-        //if (transport.vertex1X > transport.vertex3X){
-        //    peopleARRAY.get(i).setPersonPosition(townARRAY.get(i).getTown1x() - townARRAY.get(i).getTownRadius() - circleRadius - 3, townARRAY.get(i).getTown1y() - townARRAY.get(i).getTownRadius() - circleRadius - 3);
-        //    peopleARRAY.get(i).velocity.x = townARRAY.get(g).getTown1x() + townARRAY.get(f).getTown1x();
-        //    peopleARRAY.get(i).velocity.y = townARRAY.get(g).getTown1y() + townARRAY.get(f).getTown1y();
-        //}
 
         float y1 = 7;
         float y2 = 500;
@@ -228,9 +213,10 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
-
     }
 }
+
+
 
 
 
