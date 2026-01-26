@@ -27,7 +27,7 @@ public class Main extends ApplicationAdapter {
     private int screenHeight;
     float circleRadius = 3;
     float infectChance = 0.2f;
-    float transportChance = 0.2f;
+    float transportChance = 0.02f;
     float infectRoll;
     float transportRoll = (float) Math.random();
 
@@ -51,8 +51,6 @@ public class Main extends ApplicationAdapter {
 
             System.out.println("ERROR DETECTED: INVALID INPUT");
             System.out.println("PLEASE RESET PROGRAM AND ENTER INTEGERS TO CONTINUE");
-
-            System.out.println("RETARD");
         }
 
         for (int i = 0; i <= arrayTownSize - 1; i++) {
@@ -103,16 +101,16 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         float time = Gdx.graphics.getDeltaTime();
 
-        for (Person person : peopleARRAY) {
-            person.renderShape(sr);
+        for (Transport transport : transportArray) {
+            transport.renderTransport(sr3);
         }
 
         for (Town town : townARRAY) {
             town.renderTown(sr2);
         }
 
-        for (Transport transport : transportArray) {
-            transport.renderTransport(sr3);
+        for (Person person : peopleARRAY) {
+            person.renderShape(sr);
         }
 
         for (Person person : peopleARRAY) {
@@ -167,17 +165,21 @@ public class Main extends ApplicationAdapter {
 
                             Transport transport = transportArray.get(whichTransportINT);
 
-                            Vector2 transDst = new Vector2(transport.vertex3X - transport.vertex1X, transport.vertex3Y - transport.vertex1Y);
+                            float gradient = (transport.vertex3Y - transport.vertex1Y) / (transport.vertex3X - transport.vertex1X);
+                            //y = mx + c
+                            //m = gradient
+                            //
+                            Vector2 transDst = new Vector2(gradient, gradient);
 
-                            person.setPersonPosition((transport.vertex3X - transport.vertex1X) * town.getTownRadius() * 1.1f, (transport.vertex3Y - transport.vertex1Y) * town.getTownRadius() * 1.1f);
-                            person.velocity.x = transDst.x;
-                            person.velocity.y = transDst.y;
+
+                            person.setPersonPosition(400,400);
+                            person.velocity.x = 0;
+                            person.velocity.y = 0;
                         }
                     }
                 }
             }
         }
-
 
         float y1 = 7;
         float y2 = 500;
@@ -215,6 +217,7 @@ public class Main extends ApplicationAdapter {
         }
     }
 }
+
 
 
 
