@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import javax.swing.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /** {@link ApplicationListener} implementation shared by all platforms. */
@@ -22,14 +23,14 @@ public class Main extends ApplicationAdapter {
     public Array<Person> peopleARRAY = new Array<>();
     public Array<Town> townARRAY = new Array<>();
     public Array<Transport> transportArray = new Array<>();
-    int [] nearTrans = new int[100];
+    float[] vertices = new float[8];
     private int screenWidth;
     private int screenHeight;
     float circleRadius = 3;
     float infectChance = 0.2f;
     float transportChance = 0.02f;
     float infectRoll;
-    float transportRoll = (float) Math.random();
+    float transportRoll;
 
 
     @Override
@@ -53,11 +54,13 @@ public class Main extends ApplicationAdapter {
             System.out.println("PLEASE RESET PROGRAM AND ENTER INTEGERS TO CONTINUE");
         }
 
+
         for (int i = 0; i <= arrayTownSize - 1; i++) {
             float town1x = (float) Math.random() * 1010;
             float town1y = (float) Math.random() * 1010;
             Town town = new Town(town1x, town1y, 30);
             townARRAY.add(town);
+
         }
 
         for (int f = 0; f <= arrayTownSize - 1; f++) {
@@ -145,37 +148,14 @@ public class Main extends ApplicationAdapter {
                 float distance = circleDst.dst(townDst);
 
                 if (distance <= circleRadius + town.getTownRadius()) {
-                    infectRoll = (float) Math.random();
-                    if (person.velocity.x > person.velocity.y) {
-                        person.velocity.x *= -1;
-                    }
 
-                    if (person.velocity.y > person.velocity.x) {
-                        person.velocity.y *= -1;
-                    }
+                    infectRoll = (float) Math.random();
+                    person.velocity.x *= -1;
+                    person.velocity.y *= -1;
 
                     if (infectRoll <= infectChance) {
                         person.green = 0f;
-                        person.red = 100f;
-
-                        int i = 0;
-                        if (transportChance >= transportRoll) {
-                            float whichTransport = (float) Math.random() * transportArray.size;
-                            int whichTransportINT = (int) whichTransport;
-
-                            Transport transport = transportArray.get(whichTransportINT);
-
-                            float gradient = (transport.vertex3Y - transport.vertex1Y) / (transport.vertex3X - transport.vertex1X);
-                            //y = mx + c
-                            //m = gradient
-                            //
-                            Vector2 transDst = new Vector2(gradient, gradient);
-
-
-                            person.setPersonPosition(400,400);
-                            person.velocity.x = 0;
-                            person.velocity.y = 0;
-                        }
+                        person.red = 1f;
                     }
                 }
             }
@@ -185,7 +165,7 @@ public class Main extends ApplicationAdapter {
         float y2 = 500;
         float x1 = 67;
         float x2 = 500;
-        float gradient = (y2 - y1) / (x2 - x1);
+        //float gradient = (y2 - y1) / (x2 - x1);
         //System.out.println("GRADIENT = " + gradient);
 
         for (int i = 0; i <= peopleARRAY.size - 1; i++) {
@@ -215,9 +195,39 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
+
+        for (Person person : peopleARRAY) {
+            for (int i = 0; i < townARRAY.size; i++) {
+                for (int f = 1; f < townARRAY.size; f++) {
+
+                    Vector2 circleDst = new Vector2(person.circleX, person.circleY);
+                    Vector2 townDst = new Vector2(townARRAY.get(i).getTown1x(), townARRAY.get(i).getTown1y());
+                    float distance = circleDst.dst(townDst);
+
+                    if (distance <= circleRadius + townARRAY.get(i).getTownRadius()) {
+                        transportRoll = 5f;
+                        if (transportChance <= transportRoll) {
+
+                            float whichTransport = (float) Math.random() * transportArray.size;
+                            int whichTransportINT = (int) whichTransport;
+                            Transport transport = transportArray.get(whichTransportINT);
+                            float dx = townARRAY.get(f).getTown1x() - townARRAY.get(i).getTown1x();
+                            float dy = townARRAY.get(f).getTown1y() - townARRAY.get(i).getTown1y();
+                            float gradient = dy / dx;
+                            System.out.println(gradient);
+                            //y = mx + c
+                            //m = gradient
+                            Vector2 scale = new Vector2(50, 50);
+                            Vector2 transDst = new Vector2(gradient, gradient).nor().scl(scale);
+
+
+                        }
+                    }
+                }
+            }
+        }
     }
 }
-
 
 
 
@@ -233,45 +243,10 @@ public class Person {
 
 
     // Parameters
-    private float personX = (float) Math.random() * 101;
-    private float personY = (float) Math.random() * 101;
-    private float personX2 = 100;
-    private float personY2 = 100;
-    private float personX3 = 100;
-    private float personY3 = 200;
-    public float arrayX = 150;
-    public float arrayY = 150;
     public Vector2 velocity = new Vector2((float) Math.random() * 101 * 2, (float) Math.random() * 101 * 2);
     public float circleX;
     public float circleY;
     private float circleRadius;
-
-
-    //Getters
-    public float getPersonX() {
-        return personX;
-    }
-    public float getPersonY() {
-        return personY;
-    }
-    public float getPersonX2() {
-        return personX2;
-    }
-    public float getPersonY2() {
-        return personY2;
-    }
-    public float getPersonX3() {
-        return personX3;
-    }
-    public float getPersonY3() {
-        return personY3;
-    }
-    public float getArrayX() {
-        return arrayX;
-    }
-    public float getArrayY() {
-        return arrayY;
-    }
 
     float time = Gdx.graphics.getDeltaTime();
     //Set position
@@ -318,33 +293,12 @@ public class Person {
         shapeRenderer.end();
     }
 
-
-
-
     int screenHeight = Gdx.graphics.getHeight();
     int screenWidth = Gdx.graphics.getWidth();
-
-
-    public void checkBoundary() {
-        if (circleX - 6 <= 0) {
-            setPersonPosition(100, circleY);
-            velocity.x = velocity.x * -1;
-
-        }
-        if (circleX + 6 >= screenWidth) {
-            setPersonPosition(screenWidth - 8, circleY);
-            velocity.x = velocity.x * -1;
-        }
-        if (circleY - 6 <= 0) {
-            setPersonPosition(circleX, 6);
-            velocity.y = velocity.y * -1;
-        }
-        if (circleY + 6 >= screenHeight) {
-            setPersonPosition(circleX, screenHeight - 6);
-            velocity.y = velocity.y * -1;
-        }
-    }
 }
+
+
+
 
 package io.github.some_example_name;
 
