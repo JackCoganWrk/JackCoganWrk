@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import javax.swing.*;
+
 import java.util.Scanner;
 
 /** {@link ApplicationListener} implementation shared by all platforms. */
@@ -21,7 +21,6 @@ public class Main extends ApplicationAdapter {
     public Array<Person> peopleARRAY = new Array<>();
     public Array<Town> townARRAY = new Array<>();
     public Array<Transport> transportArray = new Array<>();
-    float[] vertices = new float[8];
     private int screenWidth;
     private int screenHeight;
     float circleRadius = 3;
@@ -51,15 +50,11 @@ public class Main extends ApplicationAdapter {
             System.out.println("PLEASE RESET PROGRAM AND ENTER INTEGERS TO CONTINUE");
         }
 
-        int j = 0;
-        int h = 0;
         for (int i = 0; i <= arrayTownSize - 1; i++) {
-            float town1x = 250 + j;
-            float town1y = 250 + h;
-            Town town = new Town(town1x, town1y, 30);
+            float town1x = (float)Math.random() * 1010;
+            float town1y = (float)Math.random() * 1010;
+            Town town = new Town(town1x, town1y);
             townARRAY.add(town);
-            j += 500;
-            h += 50;
         }
 
         for (int f = 0; f <= arrayTownSize - 1; f++) {
@@ -81,8 +76,8 @@ public class Main extends ApplicationAdapter {
         }
 
         for (int i = 0; i <= arrayPeopleSize - 1; i++) {
-            float circleX = 100;//(float) Math.random() * 1010
-            float circleY = 100;//(float) Math.random() * 1010
+            float circleX = (float) Math.random() * 1010;
+            float circleY = (float) Math.random() * 1010;//(float) Math.random() * 1010
             Person person = new Person(circleX, circleY, circleRadius);
             peopleARRAY.add(person);
         }
@@ -188,13 +183,16 @@ public class Main extends ApplicationAdapter {
             }
         }
 
+        //Transport collisions
         for (Person person : peopleARRAY) {
             for (int i = 0; i < townARRAY.size; i++) {
                 for (int f = 1; f < townARRAY.size; f++) {
                     if (i != f) {
                         Vector2 circleDst = new Vector2(person.circleX, person.circleY);
                         Vector2 townDst = new Vector2(townARRAY.get(i).getTown1x(), townARRAY.get(i).getTown1y());
+                        Vector2 townDst2 = new Vector2(townARRAY.get(f).getTown1x(), townARRAY.get(f).getTown1y());
                         float distance = circleDst.dst(townDst);
+                        float distance2 = circleDst.dst(townDst2);
 
                         if (distance <= circleRadius + townARRAY.get(i).getTownRadius()) {
                             transportRoll = 0.8f;
@@ -203,24 +201,21 @@ public class Main extends ApplicationAdapter {
                                 float dx = townARRAY.get(f).getTown1x() - townARRAY.get(i).getTown1x();
                                 float dy = townARRAY.get(f).getTown1y() - townARRAY.get(i).getTown1y();
 
-                                //y = mx + c
-                                //m = gradient
+                                System.out.println("dx = " + dx / 4);
+                                System.out.println("dy = " + dy / 4);
 
                                 Vector2 scale = new Vector2(50, 50);
                                 Vector2 transDst = new Vector2(dx, dy).nor().scl(scale);
-                                // System.out.println(transDst.x + " " + transDst.y);
-                                float dx2 = dx * dx;
-                                float dy2 = dy * dy;
-                                float dt2 = dx2 + dy2;
-                                double sqrt = Math.sqrt(dt2);
-                                float p = (float)sqrt;
-                                person.setPersonPosition(townARRAY.get(i).getTown1x() + townARRAY.get(i).getTownRadius() + circleRadius + 2, townARRAY.get(i).getTown1y() + 5); //(townARRAY.size - 1).getTown1y() + dy);//townARRAY.get(townARRAY.size - 1).getTown1x() //(townARRAY.size - 1).getTown1y() + dy
-                                System.out.println("dx = " + dx);
-                                System.out.println("dy = " + dy);
+
+                                person.setPersonPosition(townARRAY.get(i).getTown1x() + (dx / 6), townARRAY.get(i).getTown1y() + (dy / 6)); //townARRAY.get(i).getTown1x() + townARRAY.get(i).getTownRadius() + circleRadius + 2, townARRAY.get(i).getTown1y() + 5
                                 person.velocity.x = transDst.x;
                                 person.velocity.y = transDst.y;
-                                //System.out.println("NEW POSITION = " + person.circleX + " " + person.circleY);
-                                //System.out.println("NEW VELOCITY = " + person.velocity.x + " " + person.velocity.y);
+
+                                if (distance2 <= townARRAY.get(f).getTownRadius() + circleRadius){
+                                    person.setPersonPosition(townARRAY.get(f).getTown1x() + (float) Math.random() * 67, townARRAY.get(f).getTown1y() + (float) Math.random() * 67);
+                                    person.velocity.x = (float) Math.random() * 101 * 2;
+                                    person.velocity.y = (float) Math.random() * 101 * 2;
+                                }
                             }
                         }
                     }
@@ -229,7 +224,6 @@ public class Main extends ApplicationAdapter {
         }
     }
 }
-
 
 
 
