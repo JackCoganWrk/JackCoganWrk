@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("ENTER STRING");
+        Scanner s = new Scanner(System.in);
+        String input = s.nextLine().toUpperCase();
+        int counter = 1;
+        int len = input.length() * 2;
+        char[] charArray = new char[input.length()];
+        char[] inputArray = input.toCharArray();
+        char[] outputArray = new char[len];
+
+        for (int i = 0; i <= input.length(); i++){
+            if (inputArray[i] == inputArray[i + 1]){
+                counter += 1;
+                outputArray[]
+            } else if (inputArray[i] != inputArray[i + 1]) {
+                counter = 1;
+            }
+        }
+
+        System.out.println();
+    }
+}
