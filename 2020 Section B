@@ -1,0 +1,25 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("ENTER INTEGER GREATER THAN 1:");
+        int x = s.nextInt();
+        int product = 1;
+        int factor = 0;
+        while (product < x){
+            factor += 1;
+            product = product * factor;
+        }
+        if (x == product){
+            product = 1;
+            for (int n = 1; n <= factor; n++){
+                product = product * n;
+                System.out.println(n);
+            }
+        }
+        else {
+            System.out.println("NO RESULT");
+        }
+    }
+}
