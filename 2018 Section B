@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        boolean repeat = true;
+        boolean validNum = true;
+
+        Scanner s = new Scanner(System.in);
+        while (repeat) {
+
+            System.out.println("ENTER 1 TO CONTINUE, 2 TO STOP");
+            int repeatNum = s.nextInt();
+
+            if (repeatNum == 1) {
+                while (validNum) {
+
+                    System.out.println("ENTER INTEGER");
+                    int input = s.nextInt();
+
+                    if (input > 1){
+                        for (int i = 2; i < input; i++){
+                            int divNum = input % i;
+
+                            if (divNum == 0){
+                                System.out.println("NOT PRIME");
+                            }
+                            else {
+                                System.out.println("PRIME");
+                            }
+                            break;
+
+                        }
+
+                    } else if (input == 1) {
+                        validNum = false;
+                        System.out.println("ENTER NUMBER ABOVE 1");
+
+                    } else {
+                        validNum = false;
+                        System.out.println("ENTER NUMBER ABOVE 1");
+                    }
+                }
+            }
+            else {
+                repeat = false;
+            }
+        }
+    }
+}
