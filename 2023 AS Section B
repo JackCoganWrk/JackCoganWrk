@@ -1,0 +1,23 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter an integer greater than 1:");
+        int number = s.nextInt();
+        int x = 2;
+        int count = 0;
+        while (number > 1) {
+            boolean multi = false;
+            while (number % x == 0) {
+                if (!multi) {
+                    System.out.println(x);
+                }
+                count += 1;
+                multi = true;
+                number /= x;
+            }
+            x += 1;
+        }
+        System.out.println(count);
+    }
+}
